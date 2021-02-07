@@ -8,6 +8,9 @@ import android.widget.HorizontalScrollView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
+import android.widget.TableRow;
+
+import java.util.List;
 
 public class DataTable extends RelativeLayout {
 
@@ -15,6 +18,7 @@ public class DataTable extends RelativeLayout {
   private final AttributeSet attributeSet;
 
   private final View mainView;
+  private DataTableAdapter dataTableAdapter;
 
   private TableLayout tlRowHeader, tlColumnHeader, tlBody;
 
@@ -58,6 +62,64 @@ public class DataTable extends RelativeLayout {
   }
 
   private void initialize() {
+  }
+
+  private void populateCorner(String cornerText) {
+    CornerTextView textView = dataTableAdapter.onCreateCornerView();
+
+    if (textView == null)
+      throw new DataTableError("CornerTextView cannot be null for DataTableAdapter!");
+
+    textView.setText(cornerText);
+
+    layoutCorner.addView(textView);
+  }
+
+  private void populateRowHeader(List<String> rowHeaderTexts) {
+    if (rowHeaderTexts == null) return;
+
+    for (String rowHeaderText : rowHeaderTexts) {
+      RowHeaderTextView textView = dataTableAdapter.onCreateRowHeaderView();
+
+      if (textView == null)
+        throw new DataTableError("RowHeaderTextView cannot be null for DataTableAdapter!");
+
+      // * Creating row if doesn't already have
+      if (tlRowHeader.getChildCount() == 0)
+        tlRowHeader.addView(new TableRow(context));
+
+      textView.setText(rowHeaderText);
+
+      ((TableRow) tlRowHeader.getChildAt(0)).addView(textView);
+    }
+  }
+
+  private void populateColumnHeader(List<String> columnHeaderTexts) {
+    if (columnHeaderTexts == null) return;
+
+    for (String columnHeaderText : columnHeaderTexts) {
+      ColumnHeaderTextView textView = dataTableAdapter.onCreateColumnHeaderView();
+
+      if (textView == null)
+        throw new DataTableError("RowHeaderTextView cannot be null for DataTableAdapter!");
+
+      textView.setText(columnHeaderText);
+
+      TableRow tableRow = new TableRow(context);
+      tableRow.addView(textView);
+
+      tlColumnHeader.addView(tableRow);
+    }
+  }
+
+  public void setAdapter(DataTableAdapter dataTableAdapter) {
+    this.dataTableAdapter = dataTableAdapter;
+
+    dataTableAdapter.setOnDatasetChangeListener((cornerText, rowHeaderTexts, columnHeaderTexts) -> {
+      populateCorner(cornerText);
+      populateRowHeader(rowHeaderTexts);
+      populateColumnHeader(columnHeaderTexts);
+    });
   }
 
 }

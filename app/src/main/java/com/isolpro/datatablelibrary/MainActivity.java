@@ -18,6 +18,10 @@ public class MainActivity extends AppCompatActivity {
 
     dataTable = findViewById(R.id.datatable);
     adapter = new ItemsDataTableAdapter(this);
+
+    dataTable.setAdapter(adapter);
+
+    adapter.notifyDatasetChange();
   }
 
 }
