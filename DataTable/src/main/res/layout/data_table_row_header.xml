@@ -17,13 +17,13 @@
       android:layout_height="match_parent"
       android:stretchColumns="*">
 
-      <TableRow>
+      <!--      <TableRow>-->
 
-        <com.isolpro.library.datatable.RowHeaderTextView
-          android:padding="10dp"
-          android:text="Name" />
+      <!--        <com.isolpro.library.datatable.RowHeaderTextView-->
+      <!--          android:padding="10dp"-->
+      <!--          android:text="Name" />-->
 
-      </TableRow>
+      <!--      </TableRow>-->
 
     </TableLayout>
 

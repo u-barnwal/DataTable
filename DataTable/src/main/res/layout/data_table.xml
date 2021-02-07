@@ -15,7 +15,7 @@
       layout="@layout/data_table_corner" />
 
     <include
-      android:id="@+id/layoutColHeader"
+      android:id="@+id/layoutColumnHeader"
       layout="@layout/data_table_column_header" />
 
   </LinearLayout>

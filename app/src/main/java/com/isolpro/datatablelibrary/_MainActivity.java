@@ -27,7 +27,7 @@ public class _MainActivity extends AppCompatActivity {
     setContentView(R.layout.activity_main);
 
     layoutCorner = findViewById(R.id.layoutCorner);
-    layoutColHeader = findViewById(R.id.layoutColHeader);
+    layoutColHeader = findViewById(R.id.layoutColumnHeader);
     layoutRowHeader = findViewById(R.id.layoutRowHeader);
     layoutBody = findViewById(R.id.layoutBody);
 

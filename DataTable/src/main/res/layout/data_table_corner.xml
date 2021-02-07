@@ -5,10 +5,10 @@
   android:layout_height="wrap_content"
   android:background="#D65DB1">
 
-  <com.isolpro.library.datatable.CornerTextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:padding="10dp"
-    android:text="#" />
+  <!--  <com.isolpro.library.datatable.CornerTextView-->
+  <!--    android:layout_width="wrap_content"-->
+  <!--    android:layout_height="wrap_content"-->
+  <!--    android:padding="10dp"-->
+  <!--    android:text="#" />-->
 
 </RelativeLayout>

@@ -23,13 +23,13 @@
         android:layout_height="match_parent"
         android:stretchColumns="*">
 
-        <TableRow>
+        <!--        <TableRow>-->
 
-          <TextView
-            android:padding="10dp"
-            android:text="John Doe" />
+        <!--          <TextView-->
+        <!--            android:padding="10dp"-->
+        <!--            android:text="John Doe" />-->
 
-        </TableRow>
+        <!--        </TableRow>-->
 
       </TableLayout>
 
