@@ -8,7 +8,7 @@
 
   <TextView
     android:id="@+id/classText"
-    android:background="#0dffffff"
+    android:background="@color/white_10"
     android:padding="10dp"
     android:text="Class" />
 
@@ -19,7 +19,7 @@
 
   <TextView
     android:id="@+id/roll"
-    android:background="#0dffffff"
+    android:background="@color/white_10"
     android:padding="10dp"
     android:text="Roll" />
 
@@ -30,7 +30,7 @@
 
   <TextView
     android:id="@+id/mobile"
-    android:background="#0dffffff"
+    android:background="@color/white_10"
     android:padding="10dp"
     android:text="Mobile" />
 
@@ -41,7 +41,7 @@
 
   <TextView
     android:id="@+id/subject"
-    android:background="#0dffffff"
+    android:background="@color/white_10"
     android:padding="10dp"
     android:text="Subject" />
 

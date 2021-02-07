@@ -208,4 +208,18 @@ public class DataTable extends RelativeLayout {
     });
   }
 
+  public void setCornerViewBackgroundColor(int color) {
+    layoutCorner.setBackgroundColor(color);
+  }
+
+  public void setRowHeaderBackgroundColor(int color) {
+    tlRowHeader.setBackgroundColor(color);
+  }
+
+  public void setColumnHeaderBackgroundColor(int color) {
+    tlColumnHeader.setBackgroundColor(color);
+  }
+
+
+
 }

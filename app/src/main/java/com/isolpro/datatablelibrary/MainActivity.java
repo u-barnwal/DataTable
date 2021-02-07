@@ -19,6 +19,10 @@ public class MainActivity extends AppCompatActivity {
     dataTable = findViewById(R.id.datatable);
     adapter = new ItemsDataTableAdapter(this);
 
+    dataTable.setCornerViewBackgroundColor(getResources().getColor(R.color.white_10));
+    dataTable.setRowHeaderBackgroundColor(getResources().getColor(R.color.white_10));
+    dataTable.setColumnHeaderBackgroundColor(getResources().getColor(R.color.white_10));
+
     dataTable.setAdapter(adapter);
 
     adapter.notifyDatasetChange();
