@@ -5,13 +5,35 @@
   android:layout_height="match_parent"
   tools:context=".MainActivity">
 
-  <include layout="@layout/temp_corner" />
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
 
-  <include layout="@layout/temp_row_header" />
+    <LinearLayout
+      android:layout_width="wrap_content"
+      android:layout_height="match_parent"
+      android:orientation="vertical">
 
-  <include layout="@layout/temp_col_header" />
+      <include layout="@layout/temp_corner" />
 
-  <include layout="@layout/temp_body" />
+      <include layout="@layout/temp_col_header" />
+
+    </LinearLayout>
+
+    <LinearLayout
+      android:layout_width="0dp"
+      android:layout_height="match_parent"
+      android:layout_weight="1"
+      android:orientation="vertical">
+
+      <include layout="@layout/temp_row_header" />
+
+      <include layout="@layout/temp_body" />
+
+    </LinearLayout>
+
+  </LinearLayout>
 
 </RelativeLayout>
 
