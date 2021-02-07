@@ -136,6 +136,8 @@ public class DataTable extends RelativeLayout {
   private void populateCorner(String cornerText) {
     CornerTextView textView = dataTableAdapter.onCreateCornerView();
 
+    layoutCorner.removeAllViews();
+
     if (textView == null)
       throw new DataTableError("CornerTextView cannot be null for DataTableAdapter!");
 
@@ -146,6 +148,8 @@ public class DataTable extends RelativeLayout {
 
   private void populateRowHeader(List<String> rowHeaderTexts) {
     if (rowHeaderTexts == null) return;
+
+    tlRowHeader.removeAllViews();
 
     for (String rowHeaderText : rowHeaderTexts) {
       RowHeaderTextView textView = dataTableAdapter.onCreateRowHeaderView();
@@ -166,6 +170,8 @@ public class DataTable extends RelativeLayout {
   private void populateColumnHeader(List<String> columnHeaderTexts) {
     if (columnHeaderTexts == null) return;
 
+    tlColumnHeader.removeAllViews();
+
     for (String columnHeaderText : columnHeaderTexts) {
       ColumnHeaderTextView textView = dataTableAdapter.onCreateColumnHeaderView();
 
@@ -183,6 +189,8 @@ public class DataTable extends RelativeLayout {
 
   private void populateBody(List<List<String>> bodyTextsList) {
     if (bodyTextsList == null) return;
+
+    tlBody.removeAllViews();
 
     for (List<String> bodyTexts : bodyTextsList) {
       tlBody.addView(dataTableAdapter.onCreateBodyView(bodyTexts));
