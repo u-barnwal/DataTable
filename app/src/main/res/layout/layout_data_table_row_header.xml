@@ -2,5 +2,6 @@
 <com.isolpro.library.datatable.RowHeaderTextView xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="wrap_content"
   android:layout_height="wrap_content"
+  android:background="#0dffffff"
   android:padding="10dp"
   android:text="#" />

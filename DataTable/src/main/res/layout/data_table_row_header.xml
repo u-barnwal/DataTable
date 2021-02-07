@@ -3,8 +3,7 @@
   android:id="@+id/rowHeader"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
-  android:layout_toEndOf="@id/corner"
-  android:background="#C34A36">
+  android:layout_toEndOf="@id/corner">
 
   <HorizontalScrollView
     android:id="@+id/horizontalScroll"

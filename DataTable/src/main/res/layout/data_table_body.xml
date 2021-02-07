@@ -4,8 +4,7 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:layout_below="@id/rowHeader"
-  android:layout_toEndOf="@id/colHeader"
-  android:background="#008F7A">
+  android:layout_toEndOf="@id/colHeader">
 
   <ScrollView
     android:id="@+id/scroll"

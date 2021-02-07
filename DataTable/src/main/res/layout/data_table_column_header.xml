@@ -3,8 +3,7 @@
   android:id="@+id/colHeader"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:layout_below="@id/corner"
-  android:background="#2C73D2">
+  android:layout_below="@id/corner">
 
   <ScrollView
     android:id="@+id/scroll"
