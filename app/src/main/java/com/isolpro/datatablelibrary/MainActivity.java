@@ -1,13 +1,16 @@
 package com.isolpro.datatablelibrary;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.HorizontalScrollView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -17,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
   private RelativeLayout layoutCorner, layoutColHeader, layoutRowHeader, layoutBody;
 
   private HorizontalScrollView horizontalScrollBody, horizontalScrollRowHeader;
+  private ScrollView scrollBody, scrollColHeader;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -28,11 +32,20 @@ public class MainActivity extends AppCompatActivity {
     layoutRowHeader = findViewById(R.id.layoutRowHeader);
     layoutBody = findViewById(R.id.layoutBody);
 
+    horizontalScrollRowHeader = layoutRowHeader.findViewById(R.id.horizontalScroll);
+    horizontalScrollBody = layoutBody.findViewById(R.id.horizontalScroll);
+
+    scrollBody = layoutColHeader.findViewById(R.id.scroll);
+    scrollColHeader = layoutBody.findViewById(R.id.scroll);
+
     rowHeader = layoutRowHeader.findViewById(R.id.table);
     colHeader = layoutColHeader.findViewById(R.id.table);
     body = layoutBody.findViewById(R.id.table);
 
     body.post(this::syncBodyWidthWithRowHeader);
+
+    syncBodyScrollWithRowHeaderScroll();
+    syncBodyScrollWithColHeaderScroll();
   }
 
   private void syncBodyWidthWithRowHeader() {
@@ -58,4 +71,31 @@ public class MainActivity extends AppCompatActivity {
     });
 
   }
+
+  @RequiresApi(api = Build.VERSION_CODES.M)
+  private void syncBodyScrollWithRowHeaderScroll() {
+    horizontalScrollBody.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+      horizontalScrollRowHeader.setScrollX(scrollX);
+      horizontalScrollRowHeader.setScrollY(scrollY);
+    });
+
+    horizontalScrollRowHeader.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+      horizontalScrollBody.setScrollX(scrollX);
+      horizontalScrollBody.setScrollY(scrollY);
+    });
+  }
+
+  @RequiresApi(api = Build.VERSION_CODES.M)
+  private void syncBodyScrollWithColHeaderScroll() {
+    scrollBody.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+      scrollColHeader.setScrollX(scrollX);
+      scrollColHeader.setScrollY(scrollY);
+    });
+
+    scrollColHeader.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+      scrollBody.setScrollX(scrollX);
+      scrollBody.setScrollY(scrollY);
+    });
+  }
+
 }
