@@ -2,7 +2,6 @@ package com.isolpro.datatablelibrary;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.HorizontalScrollView;
 import android.widget.RelativeLayout;
@@ -43,15 +42,13 @@ public class MainActivity extends AppCompatActivity {
     body = layoutBody.findViewById(R.id.table);
 
     body.post(this::syncBodyWidthWithRowHeader);
+    body.post(this::syncBodyHeightWithColHeader);
 
     syncBodyScrollWithRowHeaderScroll();
     syncBodyScrollWithColHeaderScroll();
   }
 
   private void syncBodyWidthWithRowHeader() {
-    Log.e("body_width: ", String.valueOf(body.getWidth()));
-    Log.e("row_header_width: ", String.valueOf(rowHeader.getMeasuredWidth()));
-
     TableRow firstBodyRow = (TableRow) body.getChildAt(0);
     TableRow rowHeaderRow = (TableRow) rowHeader.getChildAt(0);
 
@@ -64,12 +61,18 @@ public class MainActivity extends AppCompatActivity {
       else
         bodyCell.setMinimumWidth(rowHeaderCell.getMeasuredWidth());
     }
+  }
 
-    rowHeader.post(() -> {
-      Log.e("body_width: ", String.valueOf(body.getWidth()));
-      Log.e("row_header_width: ", String.valueOf(rowHeader.getMeasuredWidth()));
-    });
+  private void syncBodyHeightWithColHeader() {
+    for (int i = 0; i < body.getChildCount(); i++) {
+      View bodyColumn = body.getChildAt(i);
+      View colHeaderColumn = colHeader.getChildAt(i);
 
+      if(bodyColumn.getMeasuredHeight()> colHeaderColumn.getMeasuredHeight())
+        colHeaderColumn.setMinimumHeight(bodyColumn.getMeasuredHeight());
+      else
+        bodyColumn.setMinimumHeight(colHeaderColumn.getMeasuredHeight());
+    }
   }
 
   @RequiresApi(api = Build.VERSION_CODES.M)

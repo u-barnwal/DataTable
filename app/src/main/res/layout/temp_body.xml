@@ -35,7 +35,7 @@
 
           <TextView
             android:padding="10dp"
-            android:text="A" />
+            android:text="A\nB" />
 
           <TextView
             android:padding="10dp"
@@ -491,7 +491,7 @@
 
           <TextView
             android:padding="10dp"
-            android:text="johndoe@gmail.com" />
+            android:text="johndoe@gmail.com\nYeah" />
 
           <TextView
             android:padding="10dp"
