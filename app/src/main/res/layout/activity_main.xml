@@ -15,9 +15,13 @@
       android:layout_height="match_parent"
       android:orientation="vertical">
 
-      <include layout="@layout/temp_corner" />
+      <include
+        android:id="@+id/layoutCorner"
+        layout="@layout/temp_corner" />
 
-      <include layout="@layout/temp_col_header" />
+      <include
+        android:id="@+id/layoutColHeader"
+        layout="@layout/temp_col_header" />
 
     </LinearLayout>
 
@@ -27,9 +31,13 @@
       android:layout_weight="1"
       android:orientation="vertical">
 
-      <include layout="@layout/temp_row_header" />
+      <include
+        android:id="@+id/layoutRowHeader"
+        layout="@layout/temp_row_header" />
 
-      <include layout="@layout/temp_body" />
+      <include
+        android:id="@+id/layoutBody"
+        layout="@layout/temp_body" />
 
     </LinearLayout>
 
