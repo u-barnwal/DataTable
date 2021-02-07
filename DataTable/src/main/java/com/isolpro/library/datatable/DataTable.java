@@ -112,13 +112,22 @@ public class DataTable extends RelativeLayout {
     }
   }
 
+  private void populateBody(List<List<String>> bodyTextsList) {
+    if (bodyTextsList == null) return;
+
+    for (List<String> bodyTexts : bodyTextsList) {
+      tlBody.addView(dataTableAdapter.onCreateBodyView(bodyTexts));
+    }
+  }
+
   public void setAdapter(DataTableAdapter dataTableAdapter) {
     this.dataTableAdapter = dataTableAdapter;
 
-    dataTableAdapter.setOnDatasetChangeListener((cornerText, rowHeaderTexts, columnHeaderTexts) -> {
+    dataTableAdapter.setOnDatasetChangeListener((cornerText, rowHeaderTexts, columnHeaderTexts, bodyTextsList) -> {
       populateCorner(cornerText);
       populateRowHeader(rowHeaderTexts);
       populateColumnHeader(columnHeaderTexts);
+      populateBody(bodyTextsList);
     });
   }
 

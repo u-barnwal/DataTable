@@ -1,7 +1,10 @@
 package com.isolpro.datatablelibrary;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.widget.TableRow;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
@@ -35,6 +38,23 @@ public class ItemsDataTableAdapter extends DataTableAdapter {
   @Override
   protected ColumnHeaderTextView onCreateColumnHeaderView() {
     return (ColumnHeaderTextView) LayoutInflater.from(context).inflate(R.layout.layout_data_table_column_header, null);
+  }
+
+  @NonNull
+  @Override
+  protected TableRow onCreateBodyView(List<String> bodyTexts) {
+    TableRow tableRow = (TableRow) LayoutInflater.from(context).inflate(R.layout.layout_data_table_body, null);
+
+    ((TextView) tableRow.findViewById(R.id.name)).setText(bodyTexts.get(0));
+    ((TextView) tableRow.findViewById(R.id.classText)).setText(bodyTexts.get(1));
+    ((TextView) tableRow.findViewById(R.id.section)).setText(bodyTexts.get(2));
+    ((TextView) tableRow.findViewById(R.id.roll)).setText(bodyTexts.get(3));
+    ((TextView) tableRow.findViewById(R.id.email)).setText(bodyTexts.get(4));
+    ((TextView) tableRow.findViewById(R.id.mobile)).setText(bodyTexts.get(5));
+    ((TextView) tableRow.findViewById(R.id.website)).setText(bodyTexts.get(6));
+    ((TextView) tableRow.findViewById(R.id.subject)).setText(bodyTexts.get(7));
+
+    return tableRow;
   }
 
   @Override
@@ -89,5 +109,49 @@ public class ItemsDataTableAdapter extends DataTableAdapter {
     strings.add("25");
 
     return strings;
+  }
+
+  @Override
+  protected List<List<String>> onPopulateBodyView() {
+    List<String> strings = new ArrayList<>();
+
+    strings.add("John Doe");
+    strings.add("12th");
+    strings.add("A");
+    strings.add("21");
+    strings.add("johndoe@gmail.com");
+    strings.add("9555666555");
+    strings.add("www.johndoe.com");
+    strings.add("English");
+
+    List<List<String>> lists = new ArrayList<>();
+
+    lists.add(strings);
+    lists.add(strings);
+    lists.add(strings);
+    lists.add(strings);
+    lists.add(strings);
+    lists.add(strings);
+    lists.add(strings);
+    lists.add(strings);
+    lists.add(strings);
+    lists.add(strings);
+    lists.add(strings);
+    lists.add(strings);
+    lists.add(strings);
+    lists.add(strings);
+    lists.add(strings);
+    lists.add(strings);
+    lists.add(strings);
+    lists.add(strings);
+    lists.add(strings);
+    lists.add(strings);
+    lists.add(strings);
+    lists.add(strings);
+    lists.add(strings);
+    lists.add(strings);
+    lists.add(strings);
+
+    return lists;
   }
 }

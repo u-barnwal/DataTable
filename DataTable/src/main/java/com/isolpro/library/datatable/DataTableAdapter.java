@@ -1,6 +1,7 @@
 package com.isolpro.library.datatable;
 
 import android.content.Context;
+import android.widget.TableRow;
 
 import androidx.annotation.NonNull;
 
@@ -11,6 +12,7 @@ public abstract class DataTableAdapter {
   protected final Context context;
   protected String cornerText;
   protected List<String> rowHeaderTexts, columnHeaderTexts;
+  protected List<List<String>> bodyTextsList;
   private OnDatasetChangeListener onDatasetChangeListener;
 
   public DataTableAdapter(Context context) {
@@ -19,6 +21,7 @@ public abstract class DataTableAdapter {
     cornerText = onPopulateCornerView();
     rowHeaderTexts = onPopulateRowHeaderView();
     columnHeaderTexts = onPopulateColumnHeaderView();
+    bodyTextsList = onPopulateBodyView();
 
     notifyDatasetChange();
   }
@@ -32,15 +35,20 @@ public abstract class DataTableAdapter {
   @NonNull
   protected abstract ColumnHeaderTextView onCreateColumnHeaderView();
 
+  @NonNull
+  protected abstract TableRow onCreateBodyView(List<String> bodyTexts);
+
   protected abstract String onPopulateCornerView();
 
   protected abstract List<String> onPopulateRowHeaderView();
 
   protected abstract List<String> onPopulateColumnHeaderView();
 
+  protected abstract List<List<String>> onPopulateBodyView();
+
   public final void notifyDatasetChange() {
     if (onDatasetChangeListener != null)
-      onDatasetChangeListener.exec(cornerText, rowHeaderTexts, columnHeaderTexts);
+      onDatasetChangeListener.exec(cornerText, rowHeaderTexts, columnHeaderTexts,bodyTextsList);
   }
 
   final void setOnDatasetChangeListener(OnDatasetChangeListener onDatasetChangeListener) {
@@ -48,6 +56,6 @@ public abstract class DataTableAdapter {
   }
 
   interface OnDatasetChangeListener {
-    void exec(String cornerText, List<String> rowHeaderTexts, List<String> columnHeaderTexts);
+    void exec(String cornerText, List<String> rowHeaderTexts, List<String> columnHeaderTexts,List<List<String>> bodyTextsList);
   }
 }
