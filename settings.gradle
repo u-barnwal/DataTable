@@ -1,0 +1,3 @@
+include ':DataTable'
+include ':app'
+rootProject.name = "DataTableLibrary"
