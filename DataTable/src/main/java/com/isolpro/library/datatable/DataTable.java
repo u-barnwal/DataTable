@@ -2,12 +2,16 @@ package com.isolpro.library.datatable;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.TableLayout;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.RelativeLayout;
 
-public class DataTable extends TableLayout {
+public class DataTable extends RelativeLayout {
 
   private final Context context;
   private final AttributeSet attributeSet;
+
+  private View mainView;
 
   public DataTable(Context context) {
     this(context, null);
@@ -23,8 +27,8 @@ public class DataTable extends TableLayout {
   }
 
   private void initialize() {
-    setStretchAllColumns(true);
-//    setShrinkAllColumns(true);
+    mainView = LayoutInflater.from(context).inflate(R.layout.data_table, null);
+    addView(mainView);
   }
 
 }
