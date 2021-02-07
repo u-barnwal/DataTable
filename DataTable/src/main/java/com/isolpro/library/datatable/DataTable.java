@@ -1,6 +1,7 @@
 package com.isolpro.library.datatable;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,8 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+
+import androidx.annotation.RequiresApi;
 
 import java.util.List;
 
@@ -62,6 +65,72 @@ public class DataTable extends RelativeLayout {
   }
 
   private void initialize() {
+    syncScrolling();
+
+    tlBody.post(() -> {
+      remeasureBodyWithRowHeader();
+      remeasureBodyWithColumnHeader();
+    });
+  }
+
+  private void syncScrolling() {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+      syncBodyScrollWithRowHeaderScroll();
+      syncBodyScrollWithColHeaderScroll();
+    }
+  }
+
+  @RequiresApi(api = Build.VERSION_CODES.M)
+  private void syncBodyScrollWithRowHeaderScroll() {
+    hsvBody.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+      hsvRowHeader.setScrollX(scrollX);
+      hsvRowHeader.setScrollY(scrollY);
+    });
+
+    hsvRowHeader.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+      hsvBody.setScrollX(scrollX);
+      hsvBody.setScrollY(scrollY);
+    });
+  }
+
+  @RequiresApi(api = Build.VERSION_CODES.M)
+  private void syncBodyScrollWithColHeaderScroll() {
+    svBody.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+      svColumnHeader.setScrollX(scrollX);
+      svColumnHeader.setScrollY(scrollY);
+    });
+
+    svColumnHeader.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+      svBody.setScrollX(scrollX);
+      svBody.setScrollY(scrollY);
+    });
+  }
+
+  private void remeasureBodyWithRowHeader() {
+    TableRow trBody = (TableRow) tlBody.getChildAt(0);
+    TableRow trRowHeader = (TableRow) tlRowHeader.getChildAt(0);
+
+    for (int i = 0; i < trBody.getChildCount(); i++) {
+      View cellBody = trBody.getChildAt(i);
+      View cellRowHeader = trRowHeader.getChildAt(i);
+
+      if (cellBody.getMeasuredWidth() > cellRowHeader.getMeasuredWidth())
+        cellRowHeader.setMinimumWidth(cellBody.getMeasuredWidth());
+      else
+        cellBody.setMinimumWidth(cellRowHeader.getMeasuredWidth());
+    }
+  }
+
+  private void remeasureBodyWithColumnHeader() {
+    for (int i = 0; i < tlBody.getChildCount(); i++) {
+      View columnBody = tlBody.getChildAt(i);
+      View columnColumnHeader = tlColumnHeader.getChildAt(i);
+
+      if (columnBody.getMeasuredHeight() > columnColumnHeader.getMeasuredHeight())
+        columnColumnHeader.setMinimumHeight(columnBody.getMeasuredHeight());
+      else
+        columnBody.setMinimumHeight(columnColumnHeader.getMeasuredHeight());
+    }
   }
 
   private void populateCorner(String cornerText) {
