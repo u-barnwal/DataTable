@@ -11,10 +11,9 @@ import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.List;
 
 public class DataTable extends RelativeLayout {
 
@@ -23,7 +22,7 @@ public class DataTable extends RelativeLayout {
 
   private final View mainView;
   private DataTableAdapter dataTableAdapter;
-  private RecyclerView.AdapterDataObserver adapterDataObserver;
+  private DataTableAdapterDataObserver adapterDataObserver;
   private OnBodyRowClickedListener onBodyRowClickedListener;
 
   private TableLayout tlRowHeader, tlColumnHeader, tlBody;
@@ -65,6 +64,8 @@ public class DataTable extends RelativeLayout {
     tlRowHeader = layoutRowHeader.findViewById(R.id.table);
     tlColumnHeader = layoutColumnHeader.findViewById(R.id.table);
     tlBody = layoutBody.findViewById(R.id.table);
+
+    adapterDataObserver = new DataTableAdapterDataObserver();
   }
 
   private void initialize() {
@@ -133,43 +134,32 @@ public class DataTable extends RelativeLayout {
     }
   }
 
-//  private void populateCorner(String cornerText) {
-//    CornerTextView textView = dataTableAdapter.getCornerView();
-//
-//    layoutCorner.removeAllViews();
-//
-//    if (textView == null)
-//      throw new DataTableError("CornerTextView cannot be null for DataTableAdapter!");
-//
-//    textView.setText(cornerText);
-//
-//    layoutCorner.addView(textView);
-//  }
+  private void populateCorner() {
+    CornerTextView currentView = layoutCorner.getChildCount() > 0 ? (CornerTextView) layoutCorner.getChildAt(0) : null;
+    layoutCorner.addView(dataTableAdapter.getCornerView(currentView));
+  }
 
-//  private void populateRowHeader(List<String> rowHeaderTexts) {
-//    if (rowHeaderTexts == null) return;
-//
-//    tlRowHeader.removeAllViews();
-//
-//    for (String rowHeaderText : rowHeaderTexts) {
-//      TopHeaderTextView textView = dataTableAdapter.getTopHeaderView();
-//
-//      if (textView == null)
-//        throw new DataTableError("TopHeaderTextView cannot be null for DataTableAdapter!");
-//
-//      // * Creating row if doesn't already have
-//      if (tlRowHeader.getChildCount() == 0)
-//        tlRowHeader.addView(new TableRow(context));
-//
-//      textView.setText(rowHeaderText);
-//
-//      ((TableRow) tlRowHeader.getChildAt(0)).addView(textView);
+  private void populateTopHeader() {
+    if (tlRowHeader.getChildCount() == 0)
+      tlRowHeader.addView(new TableRow(context));
+
+    TableRow thTr = ((TableRow) tlRowHeader.getChildAt(0));
+
+    for (int i = 0; i < dataTableAdapter.getTopHeaderCount(); i++) {
+      TopHeaderTextView currentView = thTr.getChildCount() > i ? (TopHeaderTextView) thTr.getChildAt(i) : null;
+      thTr.addView(dataTableAdapter.getTopHeaderView(i, currentView));
+    }
+
+    // TODO: remove any extras view that may have been created
+
+    tlBody.post(this::remeasureBodyWithRowHeader);
+  }
+
+  private void populateStartHeader() {
+//    for (int i = 0; i < dataTableAdapter.getStartHeaderCount(); i++) {
+//      TopHeaderTextView currentView = tlColumnHeader.getChildCount() > i ? (TopHeaderTextView) tlColumnHeader.getChildAt(i) : null;
 //    }
-//
-//    tlBody.post(this::remeasureBodyWithRowHeader);
-//  }
-//
-//  private void populateColumnHeader(List<String> columnHeaderTexts) {
+
 //    if (columnHeaderTexts == null) return;
 //
 //    tlColumnHeader.removeAllViews();
@@ -187,11 +177,11 @@ public class DataTable extends RelativeLayout {
 //
 //      tlColumnHeader.addView(tableRow);
 //    }
-//
+
 //    tlBody.post(this::remeasureBodyWithColumnHeader);
-//  }
-//
-//  private void populateBody(List<List<String>> bodyTextsList) {
+  }
+
+  private void populateBody() {
 //    if (bodyTextsList == null) return;
 //
 //    tlBody.removeAllViews();
@@ -203,7 +193,7 @@ public class DataTable extends RelativeLayout {
 //
 //      tlBody.addView(tr);
 //    }
-//  }
+  }
 
   private void handleOnBodyRowClicked(View rowView) {
     if (onBodyRowClickedListener != null)
@@ -212,11 +202,12 @@ public class DataTable extends RelativeLayout {
 
   public void setAdapter(DataTableAdapter dataTableAdapter) {
     this.dataTableAdapter = dataTableAdapter;
+    dataTableAdapter.setAdapterDataObserver(adapterDataObserver);
 
 //    dataTableAdapter.setOnDatasetChangedListener((cornerText, rowHeaderTexts, columnHeaderTexts, bodyTextsList) -> {
 //      populateCorner(cornerText);
-//      populateRowHeader(rowHeaderTexts);
-//      populateColumnHeader(columnHeaderTexts);
+//      populateTopHeader(rowHeaderTexts);
+//      populateStartHeader(columnHeaderTexts);
 //      populateBody(bodyTextsList);
 //    });
   }
@@ -243,6 +234,40 @@ public class DataTable extends RelativeLayout {
 
   private class DataTableAdapterDataObserver extends RecyclerView.AdapterDataObserver {
 
+    @Override
+    public void onChanged() {
+      if (dataTableAdapter != null) {
+        populateCorner();
+        populateTopHeader();
+        populateStartHeader();
+        populateBody();
+      }
+    }
+
+    @Override
+    public void onItemRangeChanged(int positionStart, int itemCount) {
+      super.onItemRangeChanged(positionStart, itemCount);
+    }
+
+    @Override
+    public void onItemRangeChanged(int positionStart, int itemCount, @Nullable Object payload) {
+      super.onItemRangeChanged(positionStart, itemCount, payload);
+    }
+
+    @Override
+    public void onItemRangeInserted(int positionStart, int itemCount) {
+      super.onItemRangeInserted(positionStart, itemCount);
+    }
+
+    @Override
+    public void onItemRangeRemoved(int positionStart, int itemCount) {
+      super.onItemRangeRemoved(positionStart, itemCount);
+    }
+
+    @Override
+    public void onItemRangeMoved(int fromPosition, int toPosition, int itemCount) {
+      super.onItemRangeMoved(fromPosition, toPosition, itemCount);
+    }
   }
 
 }

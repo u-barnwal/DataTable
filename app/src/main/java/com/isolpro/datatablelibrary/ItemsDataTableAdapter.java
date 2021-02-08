@@ -120,7 +120,7 @@ public class ItemsDataTableAdapter extends DataTableAdapter<String> {
   }
 
   @Override
-  public String getCornerItem(int position) {
+  public String getCornerItem() {
     return cornerItem;
   }
 
@@ -141,12 +141,12 @@ public class ItemsDataTableAdapter extends DataTableAdapter<String> {
 
   @NonNull
   @Override
-  protected CornerTextView getCornerView(int position, CornerTextView view) {
+  protected CornerTextView getCornerView(CornerTextView view) {
     CornerTextView cornerTextView = view != null
       ? view
       : (CornerTextView) LayoutInflater.from(context).inflate(R.layout.layout_data_table_corner, null);
 
-    cornerTextView.setText(getCornerItem(position));
+    cornerTextView.setText(getCornerItem());
 
     return cornerTextView;
   }
