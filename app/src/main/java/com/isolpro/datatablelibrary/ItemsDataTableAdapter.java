@@ -54,6 +54,8 @@ public class ItemsDataTableAdapter extends DataTableAdapter {
     ((TextView) tableRow.findViewById(R.id.website)).setText(bodyTexts.get(6));
     ((TextView) tableRow.findViewById(R.id.subject)).setText(bodyTexts.get(7));
 
+    tableRow.setTag("1");
+
     return tableRow;
   }
 

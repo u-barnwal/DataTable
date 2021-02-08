@@ -1,6 +1,7 @@
 package com.isolpro.datatablelibrary;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -23,9 +24,11 @@ public class MainActivity extends AppCompatActivity {
     dataTable.setRowHeaderBackgroundColor(getResources().getColor(R.color.white_10));
     dataTable.setColumnHeaderBackgroundColor(getResources().getColor(R.color.white_10));
 
+    dataTable.setOnBodyRowClickedListener(tableRow -> Log.e("onClicked----: ", (String) tableRow.getTag()));
+
     dataTable.setAdapter(adapter);
 
-    adapter.notifyDatasetChange();
+    adapter.notifyDatasetChanged();
   }
 
 }

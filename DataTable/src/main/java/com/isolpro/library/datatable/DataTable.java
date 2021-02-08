@@ -22,6 +22,7 @@ public class DataTable extends RelativeLayout {
 
   private final View mainView;
   private DataTableAdapter dataTableAdapter;
+  private OnBodyRowClickedListener onBodyRowClickedListener;
 
   private TableLayout tlRowHeader, tlColumnHeader, tlBody;
 
@@ -66,11 +67,6 @@ public class DataTable extends RelativeLayout {
 
   private void initialize() {
     syncScrolling();
-
-    tlBody.post(() -> {
-      remeasureBodyWithRowHeader();
-      remeasureBodyWithColumnHeader();
-    });
   }
 
   private void syncScrolling() {
@@ -167,6 +163,8 @@ public class DataTable extends RelativeLayout {
 
       ((TableRow) tlRowHeader.getChildAt(0)).addView(textView);
     }
+
+    tlBody.post(this::remeasureBodyWithRowHeader);
   }
 
   private void populateColumnHeader(List<String> columnHeaderTexts) {
@@ -187,6 +185,8 @@ public class DataTable extends RelativeLayout {
 
       tlColumnHeader.addView(tableRow);
     }
+
+    tlBody.post(this::remeasureBodyWithColumnHeader);
   }
 
   private void populateBody(List<List<String>> bodyTextsList) {
@@ -195,14 +195,23 @@ public class DataTable extends RelativeLayout {
     tlBody.removeAllViews();
 
     for (List<String> bodyTexts : bodyTextsList) {
-      tlBody.addView(dataTableAdapter.onCreateBodyView(bodyTexts));
+      TableRow tr = dataTableAdapter.onCreateBodyView(bodyTexts);
+
+      tr.setOnClickListener(this::handleOnBodyRowClicked);
+
+      tlBody.addView(tr);
     }
+  }
+
+  private void handleOnBodyRowClicked(View rowView) {
+    if (onBodyRowClickedListener != null)
+      onBodyRowClickedListener.onClicked((TableRow) rowView);
   }
 
   public void setAdapter(DataTableAdapter dataTableAdapter) {
     this.dataTableAdapter = dataTableAdapter;
 
-    dataTableAdapter.setOnDatasetChangeListener((cornerText, rowHeaderTexts, columnHeaderTexts, bodyTextsList) -> {
+    dataTableAdapter.setOnDatasetChangedListener((cornerText, rowHeaderTexts, columnHeaderTexts, bodyTextsList) -> {
       populateCorner(cornerText);
       populateRowHeader(rowHeaderTexts);
       populateColumnHeader(columnHeaderTexts);
@@ -222,5 +231,12 @@ public class DataTable extends RelativeLayout {
     tlColumnHeader.setBackgroundColor(color);
   }
 
+  public void setOnBodyRowClickedListener(OnBodyRowClickedListener onBodyRowClickedListener) {
+    this.onBodyRowClickedListener = onBodyRowClickedListener;
+  }
+
+  public interface OnBodyRowClickedListener {
+    void onClicked(TableRow tableRow);
+  }
 
 }
