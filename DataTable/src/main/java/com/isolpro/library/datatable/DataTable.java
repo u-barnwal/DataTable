@@ -3,6 +3,7 @@ package com.isolpro.library.datatable;
 import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.HorizontalScrollView;
@@ -181,40 +182,22 @@ public class DataTable extends RelativeLayout {
 
       // TODO: remove any extras view that may have been created
     }
-
-//    if (columnHeaderTexts == null) return;
-//
-//    tlColumnHeader.removeAllViews();
-//
-//    for (String columnHeaderText : columnHeaderTexts) {
-//      StartHeaderTextView textView = dataTableAdapter.getStartHeaderView();
-//
-//      if (textView == null)
-//        throw new DataTableError("TopHeaderTextView cannot be null for DataTableAdapter!");
-//
-//      textView.setText(columnHeaderText);
-//
-//      TableRow tableRow = new TableRow(context);
-//      tableRow.addView(textView);
-//
-//      tlColumnHeader.addView(tableRow);
-//    }
-
-//    tlBody.post(this::remeasureBodyWithStartHeader);
   }
 
   private void populateBody() {
-//    if (bodyTextsList == null) return;
-//
-//    tlBody.removeAllViews();
-//
-//    for (List<String> bodyTexts : bodyTextsList) {
-//      TableRow tr = dataTableAdapter.getBodyView(bodyTexts);
-//
-//      tr.setOnClickListener(this::handleOnBodyRowClicked);
-//
-//      tlBody.addView(tr);
-//    }
+    for (int i = 0; i < dataTableAdapter.getBodyCount(); i++) {
+      Log.e("tlBody.getChildCount", tlBody.getChildCount() + " " + i);
+
+      if (tlBody.getChildCount() > i) {
+        BodyTableRow currentView = (BodyTableRow) tlBody.getChildAt(i);
+
+        tlBody.removeViewAt(i);
+        tlBody.addView(dataTableAdapter.getBodyView(i, currentView), i);
+      } else
+        tlBody.addView(dataTableAdapter.getBodyView(i, null));
+    }
+
+    // TODO: remove any extras view that may have been created
   }
 
   private void handleOnBodyRowClicked(View rowView) {
