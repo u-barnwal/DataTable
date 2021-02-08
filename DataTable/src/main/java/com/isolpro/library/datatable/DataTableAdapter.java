@@ -10,18 +10,10 @@ import java.util.List;
 public abstract class DataTableAdapter {
 
   protected final Context context;
-  protected String cornerText;
-  protected List<String> rowHeaderTexts, columnHeaderTexts;
-  protected List<List<String>> bodyTextsList;
   private OnDatasetChangeListener onDatasetChangeListener;
 
   public DataTableAdapter(Context context) {
     this.context = context;
-
-    cornerText = onPopulateCornerView();
-    rowHeaderTexts = onPopulateRowHeaderView();
-    columnHeaderTexts = onPopulateColumnHeaderView();
-    bodyTextsList = onPopulateBodyView();
 
     notifyDatasetChange();
   }
@@ -48,7 +40,7 @@ public abstract class DataTableAdapter {
 
   public final void notifyDatasetChange() {
     if (onDatasetChangeListener != null)
-      onDatasetChangeListener.exec(cornerText, rowHeaderTexts, columnHeaderTexts,bodyTextsList);
+      onDatasetChangeListener.exec(onPopulateCornerView(), onPopulateRowHeaderView(), onPopulateColumnHeaderView(), onPopulateBodyView());
   }
 
   final void setOnDatasetChangeListener(OnDatasetChangeListener onDatasetChangeListener) {
@@ -56,6 +48,6 @@ public abstract class DataTableAdapter {
   }
 
   interface OnDatasetChangeListener {
-    void exec(String cornerText, List<String> rowHeaderTexts, List<String> columnHeaderTexts,List<List<String>> bodyTextsList);
+    void exec(String cornerText, List<String> rowHeaderTexts, List<String> columnHeaderTexts, List<List<String>> bodyTextsList);
   }
 }

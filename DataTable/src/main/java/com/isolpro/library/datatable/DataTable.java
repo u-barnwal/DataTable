@@ -110,6 +110,8 @@ public class DataTable extends RelativeLayout {
     TableRow trBody = (TableRow) tlBody.getChildAt(0);
     TableRow trRowHeader = (TableRow) tlRowHeader.getChildAt(0);
 
+    if (trBody == null || trRowHeader == null) return;
+
     for (int i = 0; i < trBody.getChildCount(); i++) {
       View cellBody = trBody.getChildAt(i);
       View cellRowHeader = trRowHeader.getChildAt(i);
@@ -219,7 +221,6 @@ public class DataTable extends RelativeLayout {
   public void setColumnHeaderBackgroundColor(int color) {
     tlColumnHeader.setBackgroundColor(color);
   }
-
 
 
 }
