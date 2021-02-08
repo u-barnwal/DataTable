@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
     adapter.notifyDatasetChanged();
 
-    adapter.setCornerItem("!1");
+    adapter.setCornerItem("*");
 
     List<String> topHeaderItems = new ArrayList<>();
     topHeaderItems.add("Names");
@@ -46,6 +46,18 @@ public class MainActivity extends AppCompatActivity {
     topHeaderItems.add("Subjects");
 
     adapter.setTopHeaderItems(topHeaderItems);
+
+    List<String> startHeaderItems = new ArrayList<>();
+    startHeaderItems.add("a");
+    startHeaderItems.add("b");
+    startHeaderItems.add("c");
+    startHeaderItems.add("d");
+    startHeaderItems.add("e");
+    startHeaderItems.add("f");
+    startHeaderItems.add("g");
+    startHeaderItems.add("h");
+
+    adapter.setStartHeaderItems(startHeaderItems);
 
     adapter.notifyDatasetChanged();
   }

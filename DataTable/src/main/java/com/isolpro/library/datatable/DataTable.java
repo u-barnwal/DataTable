@@ -105,7 +105,7 @@ public class DataTable extends RelativeLayout {
     });
   }
 
-  private void remeasureBodyWithRowHeader() {
+  private void remeasureBodyWithTopHeader() {
     TableRow trBody = (TableRow) tlBody.getChildAt(0);
     TableRow trRowHeader = (TableRow) tlRowHeader.getChildAt(0);
 
@@ -122,7 +122,7 @@ public class DataTable extends RelativeLayout {
     }
   }
 
-  private void remeasureBodyWithColumnHeader() {
+  private void remeasureBodyWithStartHeader() {
     for (int i = 0; i < tlBody.getChildCount(); i++) {
       View columnBody = tlBody.getChildAt(i);
       View columnColumnHeader = tlColumnHeader.getChildAt(i);
@@ -161,18 +161,25 @@ public class DataTable extends RelativeLayout {
     }
 
     // TODO: remove any extras view that may have been created
-
-    tlBody.post(this::remeasureBodyWithRowHeader);
   }
 
   private void populateStartHeader() {
     for (int i = 0; i < dataTableAdapter.getStartHeaderCount(); i++) {
-//      TopHeaderTextView currentView = tlColumnHeader.getChildCount() > i
-//        ? (TopHeaderTextView) ((TableRow) tlColumnHeader.getChildAt(i)).getChildAt(0)
-//        : null;
-//
-//      if(currentView)
+      if (tlColumnHeader.getChildCount() > i) {
+        TableRow shTr = (TableRow) tlColumnHeader.getChildAt(i);
 
+        StartHeaderTextView currentView = (StartHeaderTextView) shTr.getChildAt(0);
+
+        shTr.removeAllViews();
+        shTr.addView(dataTableAdapter.getStartHeaderView(i, currentView));
+      } else {
+        TableRow shTr = new TableRow(context);
+        shTr.addView(dataTableAdapter.getStartHeaderView(i, null));
+
+        tlColumnHeader.addView(shTr);
+      }
+
+      // TODO: remove any extras view that may have been created
     }
 
 //    if (columnHeaderTexts == null) return;
@@ -193,7 +200,7 @@ public class DataTable extends RelativeLayout {
 //      tlColumnHeader.addView(tableRow);
 //    }
 
-//    tlBody.post(this::remeasureBodyWithColumnHeader);
+//    tlBody.post(this::remeasureBodyWithStartHeader);
   }
 
   private void populateBody() {
@@ -256,6 +263,11 @@ public class DataTable extends RelativeLayout {
         populateTopHeader();
         populateStartHeader();
         populateBody();
+
+        tlBody.post(() -> {
+          remeasureBodyWithTopHeader();
+          remeasureBodyWithStartHeader();
+        });
       }
     }
 

@@ -20,8 +20,8 @@ public class ItemsDataTableAdapter extends DataTableAdapter<String> {
   private final Context context;
 
   private String cornerItem = "#";
-  private final List<String> startHeaderItems = new ArrayList<>();
-  private final List<List<String>> bodyItems = new ArrayList<>();
+  private List<String> startHeaderItems = new ArrayList<>();
+  private List<List<String>> bodyItems = new ArrayList<>();
   private List<String> topHeaderItems = new ArrayList<>();
 
   public ItemsDataTableAdapter(Context context) {
@@ -124,6 +124,10 @@ public class ItemsDataTableAdapter extends DataTableAdapter<String> {
     return cornerItem;
   }
 
+  public void setCornerItem(String cornerItem) {
+    this.cornerItem = cornerItem;
+  }
+
   @Override
   public String getTopHeaderItem(int position) {
     return topHeaderItems.get(position);
@@ -196,8 +200,12 @@ public class ItemsDataTableAdapter extends DataTableAdapter<String> {
     return bodyTableRow;
   }
 
-  public void setCornerItem(String cornerItem) {
-    this.cornerItem = cornerItem;
+  public void setStartHeaderItems(List<String> startHeaderItems) {
+    this.startHeaderItems = startHeaderItems;
+  }
+
+  public void setBodyItems(List<List<String>> bodyItems) {
+    this.bodyItems = bodyItems;
   }
 
   public void setTopHeaderItems(List<String> topHeaderItems) {
