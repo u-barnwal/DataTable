@@ -19,7 +19,7 @@
 
       <!--      <TableRow>-->
 
-      <!--        <com.isolpro.library.datatable.RowHeaderTextView-->
+      <!--        <com.isolpro.library.datatable.TopHeaderTextView-->
       <!--          android:padding="10dp"-->
       <!--          android:text="Name" />-->
 

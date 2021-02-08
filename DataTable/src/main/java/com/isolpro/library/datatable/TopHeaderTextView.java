@@ -6,17 +6,17 @@ import android.util.AttributeSet;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatTextView;
 
-public class RowHeaderTextView extends AppCompatTextView {
+public class TopHeaderTextView extends AppCompatTextView {
 
-  public RowHeaderTextView(Context context) {
+  public TopHeaderTextView(Context context) {
     this(context, null);
   }
 
-  public RowHeaderTextView(Context context, @Nullable AttributeSet attrs) {
+  public TopHeaderTextView(Context context, @Nullable AttributeSet attrs) {
     this(context, attrs, 0);
   }
 
-  public RowHeaderTextView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+  public TopHeaderTextView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
   }
 

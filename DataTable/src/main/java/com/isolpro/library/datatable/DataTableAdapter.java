@@ -1,50 +1,66 @@
 package com.isolpro.library.datatable;
 
-import android.content.Context;
-import android.widget.TableRow;
-
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public abstract class DataTableAdapter {
+public abstract class DataTableAdapter<BI> {
 
-  protected final Context context;
+  private RecyclerView.AdapterDataObserver adapterDataObserver;
   private OnDatasetChangedListener onDatasetChangedListener;
 
-  public DataTableAdapter(Context context) {
-    this.context = context;
+  public int getTopHeaderCount() {
+    return 0;
+  }
 
-    notifyDatasetChanged();
+  public int getStartHeaderCount() {
+    return 0;
+  }
+
+  public int getBodyCount() {
+    return 0;
+  }
+
+  public String getCornerItem(int position) {
+    return null;
+  }
+
+  public String getTopHeaderItem(int position) {
+    return null;
+  }
+
+  public String getStartHeaderItem(int position) {
+    return null;
+  }
+
+  public List<BI> getBodyItem(int position) {
+    return null;
   }
 
   @NonNull
-  protected abstract CornerTextView onCreateCornerView();
+  protected abstract CornerTextView getCornerView(int position, CornerTextView view);
 
   @NonNull
-  protected abstract RowHeaderTextView onCreateRowHeaderView();
+  protected abstract TopHeaderTextView getTopHeaderView(int position, TopHeaderTextView view);
 
   @NonNull
-  protected abstract ColumnHeaderTextView onCreateColumnHeaderView();
+  protected abstract StartHeaderTextView getStartHeaderView(int position, StartHeaderTextView view);
 
   @NonNull
-  protected abstract TableRow onCreateBodyView(List<String> bodyTexts);
-
-  protected abstract String onPopulateCornerView();
-
-  protected abstract List<String> onPopulateRowHeaderView();
-
-  protected abstract List<String> onPopulateColumnHeaderView();
-
-  protected abstract List<List<String>> onPopulateBodyView();
+  protected abstract BodyTableRow getBodyView(int position, BodyTableRow view);
 
   public final void notifyDatasetChanged() {
-    if (onDatasetChangedListener != null)
-      onDatasetChangedListener.exec(onPopulateCornerView(), onPopulateRowHeaderView(), onPopulateColumnHeaderView(), onPopulateBodyView());
+//    if (onDatasetChangedListener != null)
+//      onDatasetChangedListener.exec(onPopulateCornerView(), onPopulateRowHeaderView(), onPopulateColumnHeaderView(), onPopulateBodyView());
   }
 
   final void setOnDatasetChangedListener(OnDatasetChangedListener onDatasetChangedListener) {
     this.onDatasetChangedListener = onDatasetChangedListener;
+  }
+
+  public void setAdapterDataObserver(RecyclerView.AdapterDataObserver adapterDataObserver) {
+    this.adapterDataObserver = adapterDataObserver;
   }
 
   interface OnDatasetChangedListener {

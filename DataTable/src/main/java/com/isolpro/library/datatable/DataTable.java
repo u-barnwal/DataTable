@@ -12,6 +12,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 
 import androidx.annotation.RequiresApi;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
@@ -22,6 +23,7 @@ public class DataTable extends RelativeLayout {
 
   private final View mainView;
   private DataTableAdapter dataTableAdapter;
+  private RecyclerView.AdapterDataObserver adapterDataObserver;
   private OnBodyRowClickedListener onBodyRowClickedListener;
 
   private TableLayout tlRowHeader, tlColumnHeader, tlBody;
@@ -131,77 +133,77 @@ public class DataTable extends RelativeLayout {
     }
   }
 
-  private void populateCorner(String cornerText) {
-    CornerTextView textView = dataTableAdapter.onCreateCornerView();
+//  private void populateCorner(String cornerText) {
+//    CornerTextView textView = dataTableAdapter.getCornerView();
+//
+//    layoutCorner.removeAllViews();
+//
+//    if (textView == null)
+//      throw new DataTableError("CornerTextView cannot be null for DataTableAdapter!");
+//
+//    textView.setText(cornerText);
+//
+//    layoutCorner.addView(textView);
+//  }
 
-    layoutCorner.removeAllViews();
-
-    if (textView == null)
-      throw new DataTableError("CornerTextView cannot be null for DataTableAdapter!");
-
-    textView.setText(cornerText);
-
-    layoutCorner.addView(textView);
-  }
-
-  private void populateRowHeader(List<String> rowHeaderTexts) {
-    if (rowHeaderTexts == null) return;
-
-    tlRowHeader.removeAllViews();
-
-    for (String rowHeaderText : rowHeaderTexts) {
-      RowHeaderTextView textView = dataTableAdapter.onCreateRowHeaderView();
-
-      if (textView == null)
-        throw new DataTableError("RowHeaderTextView cannot be null for DataTableAdapter!");
-
-      // * Creating row if doesn't already have
-      if (tlRowHeader.getChildCount() == 0)
-        tlRowHeader.addView(new TableRow(context));
-
-      textView.setText(rowHeaderText);
-
-      ((TableRow) tlRowHeader.getChildAt(0)).addView(textView);
-    }
-
-    tlBody.post(this::remeasureBodyWithRowHeader);
-  }
-
-  private void populateColumnHeader(List<String> columnHeaderTexts) {
-    if (columnHeaderTexts == null) return;
-
-    tlColumnHeader.removeAllViews();
-
-    for (String columnHeaderText : columnHeaderTexts) {
-      ColumnHeaderTextView textView = dataTableAdapter.onCreateColumnHeaderView();
-
-      if (textView == null)
-        throw new DataTableError("RowHeaderTextView cannot be null for DataTableAdapter!");
-
-      textView.setText(columnHeaderText);
-
-      TableRow tableRow = new TableRow(context);
-      tableRow.addView(textView);
-
-      tlColumnHeader.addView(tableRow);
-    }
-
-    tlBody.post(this::remeasureBodyWithColumnHeader);
-  }
-
-  private void populateBody(List<List<String>> bodyTextsList) {
-    if (bodyTextsList == null) return;
-
-    tlBody.removeAllViews();
-
-    for (List<String> bodyTexts : bodyTextsList) {
-      TableRow tr = dataTableAdapter.onCreateBodyView(bodyTexts);
-
-      tr.setOnClickListener(this::handleOnBodyRowClicked);
-
-      tlBody.addView(tr);
-    }
-  }
+//  private void populateRowHeader(List<String> rowHeaderTexts) {
+//    if (rowHeaderTexts == null) return;
+//
+//    tlRowHeader.removeAllViews();
+//
+//    for (String rowHeaderText : rowHeaderTexts) {
+//      TopHeaderTextView textView = dataTableAdapter.getTopHeaderView();
+//
+//      if (textView == null)
+//        throw new DataTableError("TopHeaderTextView cannot be null for DataTableAdapter!");
+//
+//      // * Creating row if doesn't already have
+//      if (tlRowHeader.getChildCount() == 0)
+//        tlRowHeader.addView(new TableRow(context));
+//
+//      textView.setText(rowHeaderText);
+//
+//      ((TableRow) tlRowHeader.getChildAt(0)).addView(textView);
+//    }
+//
+//    tlBody.post(this::remeasureBodyWithRowHeader);
+//  }
+//
+//  private void populateColumnHeader(List<String> columnHeaderTexts) {
+//    if (columnHeaderTexts == null) return;
+//
+//    tlColumnHeader.removeAllViews();
+//
+//    for (String columnHeaderText : columnHeaderTexts) {
+//      StartHeaderTextView textView = dataTableAdapter.getStartHeaderView();
+//
+//      if (textView == null)
+//        throw new DataTableError("TopHeaderTextView cannot be null for DataTableAdapter!");
+//
+//      textView.setText(columnHeaderText);
+//
+//      TableRow tableRow = new TableRow(context);
+//      tableRow.addView(textView);
+//
+//      tlColumnHeader.addView(tableRow);
+//    }
+//
+//    tlBody.post(this::remeasureBodyWithColumnHeader);
+//  }
+//
+//  private void populateBody(List<List<String>> bodyTextsList) {
+//    if (bodyTextsList == null) return;
+//
+//    tlBody.removeAllViews();
+//
+//    for (List<String> bodyTexts : bodyTextsList) {
+//      TableRow tr = dataTableAdapter.getBodyView(bodyTexts);
+//
+//      tr.setOnClickListener(this::handleOnBodyRowClicked);
+//
+//      tlBody.addView(tr);
+//    }
+//  }
 
   private void handleOnBodyRowClicked(View rowView) {
     if (onBodyRowClickedListener != null)
@@ -211,12 +213,12 @@ public class DataTable extends RelativeLayout {
   public void setAdapter(DataTableAdapter dataTableAdapter) {
     this.dataTableAdapter = dataTableAdapter;
 
-    dataTableAdapter.setOnDatasetChangedListener((cornerText, rowHeaderTexts, columnHeaderTexts, bodyTextsList) -> {
-      populateCorner(cornerText);
-      populateRowHeader(rowHeaderTexts);
-      populateColumnHeader(columnHeaderTexts);
-      populateBody(bodyTextsList);
-    });
+//    dataTableAdapter.setOnDatasetChangedListener((cornerText, rowHeaderTexts, columnHeaderTexts, bodyTextsList) -> {
+//      populateCorner(cornerText);
+//      populateRowHeader(rowHeaderTexts);
+//      populateColumnHeader(columnHeaderTexts);
+//      populateBody(bodyTextsList);
+//    });
   }
 
   public void setCornerViewBackgroundColor(int color) {
@@ -237,6 +239,10 @@ public class DataTable extends RelativeLayout {
 
   public interface OnBodyRowClickedListener {
     void onClicked(TableRow tableRow);
+  }
+
+  private class DataTableAdapterDataObserver extends RecyclerView.AdapterDataObserver {
+
   }
 
 }
