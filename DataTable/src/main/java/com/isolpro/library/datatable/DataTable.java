@@ -135,7 +135,12 @@ public class DataTable extends RelativeLayout {
   }
 
   private void populateCorner() {
-    CornerTextView currentView = layoutCorner.getChildCount() > 0 ? (CornerTextView) layoutCorner.getChildAt(0) : null;
+    CornerTextView currentView = layoutCorner.getChildCount() > 0
+      ? (CornerTextView) layoutCorner.getChildAt(0)
+      : null;
+
+    layoutCorner.removeAllViews();
+
     layoutCorner.addView(dataTableAdapter.getCornerView(currentView));
   }
 
@@ -146,8 +151,13 @@ public class DataTable extends RelativeLayout {
     TableRow thTr = ((TableRow) tlRowHeader.getChildAt(0));
 
     for (int i = 0; i < dataTableAdapter.getTopHeaderCount(); i++) {
-      TopHeaderTextView currentView = thTr.getChildCount() > i ? (TopHeaderTextView) thTr.getChildAt(i) : null;
-      thTr.addView(dataTableAdapter.getTopHeaderView(i, currentView));
+      if (thTr.getChildCount() > i) {
+        TopHeaderTextView currentView = (TopHeaderTextView) thTr.getChildAt(i);
+
+        thTr.removeViewAt(i);
+        thTr.addView(dataTableAdapter.getTopHeaderView(i, currentView), i);
+      } else
+        thTr.addView(dataTableAdapter.getTopHeaderView(i, null));
     }
 
     // TODO: remove any extras view that may have been created
@@ -156,9 +166,14 @@ public class DataTable extends RelativeLayout {
   }
 
   private void populateStartHeader() {
-//    for (int i = 0; i < dataTableAdapter.getStartHeaderCount(); i++) {
-//      TopHeaderTextView currentView = tlColumnHeader.getChildCount() > i ? (TopHeaderTextView) tlColumnHeader.getChildAt(i) : null;
-//    }
+    for (int i = 0; i < dataTableAdapter.getStartHeaderCount(); i++) {
+//      TopHeaderTextView currentView = tlColumnHeader.getChildCount() > i
+//        ? (TopHeaderTextView) ((TableRow) tlColumnHeader.getChildAt(i)).getChildAt(0)
+//        : null;
+//
+//      if(currentView)
+
+    }
 
 //    if (columnHeaderTexts == null) return;
 //

@@ -7,6 +7,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.isolpro.library.datatable.DataTable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
   private DataTable dataTable;
@@ -27,6 +30,22 @@ public class MainActivity extends AppCompatActivity {
     dataTable.setOnBodyRowClickedListener(tableRow -> Log.e("onClicked----: ", (String) tableRow.getTag()));
 
     dataTable.setAdapter(adapter);
+
+    adapter.notifyDatasetChanged();
+
+    adapter.setCornerItem("!1");
+
+    List<String> topHeaderItems = new ArrayList<>();
+    topHeaderItems.add("Names");
+    topHeaderItems.add("Classes");
+    topHeaderItems.add("Sections");
+    topHeaderItems.add("Rolls");
+    topHeaderItems.add("Emails");
+    topHeaderItems.add("Mobiles");
+    topHeaderItems.add("Websites");
+    topHeaderItems.add("Subjects");
+
+    adapter.setTopHeaderItems(topHeaderItems);
 
     adapter.notifyDatasetChanged();
   }

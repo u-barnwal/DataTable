@@ -19,10 +19,10 @@ public class ItemsDataTableAdapter extends DataTableAdapter<String> {
 
   private final Context context;
 
-  private final String cornerItem = "#";
-  private final List<String> topHeaderItems = new ArrayList<>();
+  private String cornerItem = "#";
   private final List<String> startHeaderItems = new ArrayList<>();
   private final List<List<String>> bodyItems = new ArrayList<>();
+  private List<String> topHeaderItems = new ArrayList<>();
 
   public ItemsDataTableAdapter(Context context) {
     this.context = context;
@@ -194,5 +194,13 @@ public class ItemsDataTableAdapter extends DataTableAdapter<String> {
     bodyTableRow.setTag("1");
 
     return bodyTableRow;
+  }
+
+  public void setCornerItem(String cornerItem) {
+    this.cornerItem = cornerItem;
+  }
+
+  public void setTopHeaderItems(List<String> topHeaderItems) {
+    this.topHeaderItems = topHeaderItems;
   }
 }
