@@ -1,13 +1,10 @@
 package com.isolpro.library.datatable;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.List;
 
 public abstract class DataTableAdapter<BI> {
 
-  private RecyclerView.AdapterDataObserver adapterDataObserver;
+  private DataTable.AdapterDataObserver adapterDataObserver;
 
   public int getTopHeaderCount() {
     return 0;
@@ -49,12 +46,21 @@ public abstract class DataTableAdapter<BI> {
   @NonNull
   protected abstract BodyTableRow getBodyView(int position, BodyTableRow view);
 
-  public final void notifyDatasetChanged() {
+  public void notifyDatasetChanged(DataSet dataSet) {
     if (adapterDataObserver != null)
-      adapterDataObserver.onChanged();
+      adapterDataObserver.onChanged(dataSet);
   }
 
-  public void setAdapterDataObserver(RecyclerView.AdapterDataObserver adapterDataObserver) {
+  public void notifyDatasetChanged() {
+    notifyDatasetChanged(null);
+  }
+
+  void setAdapterDataObserver(DataTable.AdapterDataObserver adapterDataObserver) {
     this.adapterDataObserver = adapterDataObserver;
   }
+
+  public enum DataSet {
+    Corner, TopHeader, StartHeader, Body
+  }
+
 }

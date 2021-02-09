@@ -22,10 +22,10 @@ public class DataTable extends RelativeLayout {
 
   private final View mainView;
   private DataTableAdapter dataTableAdapter;
-  private DataTableAdapterDataObserver adapterDataObserver;
+  private AdapterDataObserver adapterDataObserver;
   private OnBodyRowClickedListener onBodyRowClickedListener;
 
-  private TableLayout tlRowHeader, tlColumnHeader, tlBody;
+  private TableLayout tlTopHeader, tlStartHeader, tlBody;
 
   private RelativeLayout layoutCorner, layoutColumnHeader, layoutRowHeader, layoutBody;
 
@@ -61,11 +61,11 @@ public class DataTable extends RelativeLayout {
     svBody = layoutColumnHeader.findViewById(R.id.scroll);
     svColumnHeader = layoutBody.findViewById(R.id.scroll);
 
-    tlRowHeader = layoutRowHeader.findViewById(R.id.table);
-    tlColumnHeader = layoutColumnHeader.findViewById(R.id.table);
+    tlTopHeader = layoutRowHeader.findViewById(R.id.table);
+    tlStartHeader = layoutColumnHeader.findViewById(R.id.table);
     tlBody = layoutBody.findViewById(R.id.table);
 
-    adapterDataObserver = new DataTableAdapterDataObserver();
+    adapterDataObserver = new AdapterDataObserver();
   }
 
   private void initialize() {
@@ -107,13 +107,13 @@ public class DataTable extends RelativeLayout {
 
   private void remeasureBodyWithTopHeader() {
     TableRow trBody = (TableRow) tlBody.getChildAt(0);
-    TableRow trRowHeader = (TableRow) tlRowHeader.getChildAt(0);
+    TableRow trTopHeader = (TableRow) tlTopHeader.getChildAt(0);
 
-    if (trBody == null || trRowHeader == null) return;
+    if (trBody == null || trTopHeader == null) return;
 
     for (int i = 0; i < trBody.getChildCount(); i++) {
       View cellBody = trBody.getChildAt(i);
-      View cellRowHeader = trRowHeader.getChildAt(i);
+      View cellRowHeader = trTopHeader.getChildAt(i);
 
       if (cellBody == null || cellRowHeader == null) return;
 
@@ -127,14 +127,14 @@ public class DataTable extends RelativeLayout {
   private void remeasureBodyWithStartHeader() {
     for (int i = 0; i < tlBody.getChildCount(); i++) {
       View columnBody = tlBody.getChildAt(i);
-      View columnColumnHeader = tlColumnHeader.getChildAt(i);
+      View columnStartHeader = tlStartHeader.getChildAt(i);
 
-      if (columnBody == null || columnColumnHeader == null) return;
+      if (columnBody == null || columnStartHeader == null) return;
 
-      if (columnBody.getMeasuredHeight() > columnColumnHeader.getMeasuredHeight())
-        columnColumnHeader.setMinimumHeight(columnBody.getMeasuredHeight());
+      if (columnBody.getMeasuredHeight() > columnStartHeader.getMeasuredHeight())
+        columnStartHeader.setMinimumHeight(columnBody.getMeasuredHeight());
       else
-        columnBody.setMinimumHeight(columnColumnHeader.getMeasuredHeight());
+        columnBody.setMinimumHeight(columnStartHeader.getMeasuredHeight());
     }
   }
 
@@ -151,10 +151,10 @@ public class DataTable extends RelativeLayout {
   private void populateTopHeader() {
     int itemsCount = dataTableAdapter.getTopHeaderCount();
 
-    if (tlRowHeader.getChildCount() == 0)
-      tlRowHeader.addView(new TableRow(context));
+    if (tlTopHeader.getChildCount() == 0)
+      tlTopHeader.addView(new TableRow(context));
 
-    TableRow thTr = ((TableRow) tlRowHeader.getChildAt(0));
+    TableRow thTr = ((TableRow) tlTopHeader.getChildAt(0));
 
     for (int i = 0; i < itemsCount; i++) {
       if (thTr.getChildCount() > i) {
@@ -173,8 +173,8 @@ public class DataTable extends RelativeLayout {
     int itemsCount = dataTableAdapter.getStartHeaderCount();
 
     for (int i = 0; i < dataTableAdapter.getStartHeaderCount(); i++) {
-      if (tlColumnHeader.getChildCount() > i) {
-        TableRow shTr = (TableRow) tlColumnHeader.getChildAt(i);
+      if (tlStartHeader.getChildCount() > i) {
+        TableRow shTr = (TableRow) tlStartHeader.getChildAt(i);
 
         StartHeaderTextView currentView = (StartHeaderTextView) shTr.getChildAt(0);
 
@@ -184,10 +184,10 @@ public class DataTable extends RelativeLayout {
         TableRow shTr = new TableRow(context);
         shTr.addView(dataTableAdapter.getStartHeaderView(i, null));
 
-        tlColumnHeader.addView(shTr);
+        tlStartHeader.addView(shTr);
       }
 
-      Utils.removeChildFromIndex(tlColumnHeader, itemsCount);
+      Utils.removeChildFromIndex(tlStartHeader, itemsCount);
     }
   }
 
@@ -207,6 +207,28 @@ public class DataTable extends RelativeLayout {
     Utils.removeChildFromIndex(tlBody, itemsCount);
   }
 
+  private void remeasureDimensions(@Nullable DataTableAdapter.DataSet dataSet) {
+    if (dataSet != null) {
+      switch (dataSet) {
+        case Corner:
+          return;
+        case TopHeader:
+          remeasureBodyWithTopHeader();
+          break;
+        case StartHeader:
+          remeasureBodyWithStartHeader();
+          break;
+        case Body:
+        default:
+          remeasureBodyWithTopHeader();
+          remeasureBodyWithStartHeader();
+      }
+    } else {
+      remeasureBodyWithTopHeader();
+      remeasureBodyWithStartHeader();
+    }
+  }
+
   private void handleOnBodyRowClicked(View rowView) {
     if (onBodyRowClickedListener != null)
       onBodyRowClickedListener.onClicked((TableRow) rowView);
@@ -215,13 +237,6 @@ public class DataTable extends RelativeLayout {
   public void setAdapter(DataTableAdapter dataTableAdapter) {
     this.dataTableAdapter = dataTableAdapter;
     dataTableAdapter.setAdapterDataObserver(adapterDataObserver);
-
-//    dataTableAdapter.setOnDatasetChangedListener((cornerText, rowHeaderTexts, columnHeaderTexts, bodyTextsList) -> {
-//      populateCorner(cornerText);
-//      populateTopHeader(rowHeaderTexts);
-//      populateStartHeader(columnHeaderTexts);
-//      populateBody(bodyTextsList);
-//    });
   }
 
   public void setCornerViewBackgroundColor(int color) {
@@ -229,11 +244,11 @@ public class DataTable extends RelativeLayout {
   }
 
   public void setRowHeaderBackgroundColor(int color) {
-    tlRowHeader.setBackgroundColor(color);
+    tlTopHeader.setBackgroundColor(color);
   }
 
   public void setColumnHeaderBackgroundColor(int color) {
-    tlColumnHeader.setBackgroundColor(color);
+    tlStartHeader.setBackgroundColor(color);
   }
 
   public void setOnBodyRowClickedListener(OnBodyRowClickedListener onBodyRowClickedListener) {
@@ -244,46 +259,58 @@ public class DataTable extends RelativeLayout {
     void onClicked(TableRow tableRow);
   }
 
-  private class DataTableAdapterDataObserver extends RecyclerView.AdapterDataObserver {
+  class AdapterDataObserver extends RecyclerView.AdapterDataObserver {
 
     @Override
     public void onChanged() {
-      if (dataTableAdapter != null) {
-        populateCorner();
-        populateTopHeader();
-        populateStartHeader();
-        populateBody();
+    }
 
-        tlBody.post(() -> {
-          remeasureBodyWithTopHeader();
-          remeasureBodyWithStartHeader();
-        });
+    public void onChanged(DataTableAdapter.DataSet dataSet) {
+      if (dataTableAdapter == null) return;
+
+      if (dataSet != null) {
+        switch (dataSet) {
+          case Corner:
+            populateCorner();
+            break;
+          case TopHeader:
+            populateTopHeader();
+            break;
+          case StartHeader:
+            populateStartHeader();
+            break;
+          case Body:
+            populateBody();
+            break;
+        }
+      } else {
+        populateBody();
+        populateStartHeader();
+        populateTopHeader();
+        populateCorner();
       }
+
+      tlBody.post(() -> remeasureDimensions(dataSet));
     }
 
     @Override
     public void onItemRangeChanged(int positionStart, int itemCount) {
-      super.onItemRangeChanged(positionStart, itemCount);
     }
 
     @Override
     public void onItemRangeChanged(int positionStart, int itemCount, @Nullable Object payload) {
-      super.onItemRangeChanged(positionStart, itemCount, payload);
     }
 
     @Override
     public void onItemRangeInserted(int positionStart, int itemCount) {
-      super.onItemRangeInserted(positionStart, itemCount);
     }
 
     @Override
     public void onItemRangeRemoved(int positionStart, int itemCount) {
-      super.onItemRangeRemoved(positionStart, itemCount);
     }
 
     @Override
     public void onItemRangeMoved(int fromPosition, int toPosition, int itemCount) {
-      super.onItemRangeMoved(fromPosition, toPosition, itemCount);
     }
   }
 
