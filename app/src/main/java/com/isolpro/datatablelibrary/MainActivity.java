@@ -24,8 +24,8 @@ public class MainActivity extends AppCompatActivity {
     adapter = new ItemsDataTableAdapter(this);
 
     dataTable.setCornerViewBackgroundColor(getResources().getColor(R.color.white_10));
-    dataTable.setRowHeaderBackgroundColor(getResources().getColor(R.color.white_10));
-    dataTable.setColumnHeaderBackgroundColor(getResources().getColor(R.color.white_10));
+    dataTable.setTopHeaderBackgroundColor(getResources().getColor(R.color.white_10));
+    dataTable.setStartHeaderBackgroundColor(getResources().getColor(R.color.white_10));
 
     dataTable.setOnBodyRowClickedListener(tableRow -> Log.e("onClicked----: ", (String) tableRow.getTag()));
 

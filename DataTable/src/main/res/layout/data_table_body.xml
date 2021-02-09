@@ -3,8 +3,8 @@
   android:id="@+id/body"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:layout_below="@id/rowHeader"
-  android:layout_toEndOf="@id/colHeader">
+  android:layout_below="@id/topHeader"
+  android:layout_toEndOf="@id/startHeader">
 
   <ScrollView
     android:id="@+id/scroll"

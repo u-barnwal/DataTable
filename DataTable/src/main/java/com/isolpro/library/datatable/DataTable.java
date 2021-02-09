@@ -27,10 +27,10 @@ public class DataTable extends RelativeLayout {
 
   private TableLayout tlTopHeader, tlStartHeader, tlBody;
 
-  private RelativeLayout layoutCorner, layoutColumnHeader, layoutRowHeader, layoutBody;
+  private RelativeLayout layoutCorner, layoutTopHeader, layoutStartHeader, layoutBody;
 
-  private HorizontalScrollView hsvBody, hsvRowHeader;
-  private ScrollView svBody, svColumnHeader;
+  private HorizontalScrollView hsvBody, hsvTopHeader;
+  private ScrollView svBody, svStartHeader;
 
   public DataTable(Context context) {
     this(context, null);
@@ -51,18 +51,18 @@ public class DataTable extends RelativeLayout {
 
   private void instantiate() {
     layoutCorner = findViewById(R.id.layoutCorner);
-    layoutColumnHeader = findViewById(R.id.layoutColumnHeader);
-    layoutRowHeader = findViewById(R.id.layoutRowHeader);
+    layoutTopHeader = findViewById(R.id.layoutTopHeader);
+    layoutStartHeader = findViewById(R.id.layoutStartHeader);
     layoutBody = findViewById(R.id.layoutBody);
 
-    hsvRowHeader = layoutRowHeader.findViewById(R.id.horizontalScroll);
+    hsvTopHeader = layoutTopHeader.findViewById(R.id.horizontalScroll);
     hsvBody = layoutBody.findViewById(R.id.horizontalScroll);
 
-    svBody = layoutColumnHeader.findViewById(R.id.scroll);
-    svColumnHeader = layoutBody.findViewById(R.id.scroll);
+    svBody = layoutStartHeader.findViewById(R.id.scroll);
+    svStartHeader = layoutBody.findViewById(R.id.scroll);
 
-    tlTopHeader = layoutRowHeader.findViewById(R.id.table);
-    tlStartHeader = layoutColumnHeader.findViewById(R.id.table);
+    tlTopHeader = layoutTopHeader.findViewById(R.id.table);
+    tlStartHeader = layoutStartHeader.findViewById(R.id.table);
     tlBody = layoutBody.findViewById(R.id.table);
 
     adapterDataObserver = new AdapterDataObserver();
@@ -74,32 +74,32 @@ public class DataTable extends RelativeLayout {
 
   private void syncScrolling() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-      syncBodyScrollWithRowHeaderScroll();
-      syncBodyScrollWithColHeaderScroll();
+      syncBodyScrollWithTopHeaderScroll();
+      syncBodyScrollWithStartHeaderScroll();
     }
   }
 
   @RequiresApi(api = Build.VERSION_CODES.M)
-  private void syncBodyScrollWithRowHeaderScroll() {
+  private void syncBodyScrollWithTopHeaderScroll() {
     hsvBody.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-      hsvRowHeader.setScrollX(scrollX);
-      hsvRowHeader.setScrollY(scrollY);
+      hsvTopHeader.setScrollX(scrollX);
+      hsvTopHeader.setScrollY(scrollY);
     });
 
-    hsvRowHeader.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+    hsvTopHeader.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
       hsvBody.setScrollX(scrollX);
       hsvBody.setScrollY(scrollY);
     });
   }
 
   @RequiresApi(api = Build.VERSION_CODES.M)
-  private void syncBodyScrollWithColHeaderScroll() {
+  private void syncBodyScrollWithStartHeaderScroll() {
     svBody.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-      svColumnHeader.setScrollX(scrollX);
-      svColumnHeader.setScrollY(scrollY);
+      svStartHeader.setScrollX(scrollX);
+      svStartHeader.setScrollY(scrollY);
     });
 
-    svColumnHeader.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+    svStartHeader.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
       svBody.setScrollX(scrollX);
       svBody.setScrollY(scrollY);
     });
@@ -113,14 +113,14 @@ public class DataTable extends RelativeLayout {
 
     for (int i = 0; i < trBody.getChildCount(); i++) {
       View cellBody = trBody.getChildAt(i);
-      View cellRowHeader = trTopHeader.getChildAt(i);
+      View cellTopHeader = trTopHeader.getChildAt(i);
 
-      if (cellBody == null || cellRowHeader == null) return;
+      if (cellBody == null || cellTopHeader == null) return;
 
-      if (cellBody.getMeasuredWidth() > cellRowHeader.getMeasuredWidth())
-        cellRowHeader.setMinimumWidth(cellBody.getMeasuredWidth());
+      if (cellBody.getMeasuredWidth() > cellTopHeader.getMeasuredWidth())
+        cellTopHeader.setMinimumWidth(cellBody.getMeasuredWidth());
       else
-        cellBody.setMinimumWidth(cellRowHeader.getMeasuredWidth());
+        cellBody.setMinimumWidth(cellTopHeader.getMeasuredWidth());
     }
   }
 
@@ -243,11 +243,11 @@ public class DataTable extends RelativeLayout {
     layoutCorner.setBackgroundColor(color);
   }
 
-  public void setRowHeaderBackgroundColor(int color) {
+  public void setTopHeaderBackgroundColor(int color) {
     tlTopHeader.setBackgroundColor(color);
   }
 
-  public void setColumnHeaderBackgroundColor(int color) {
+  public void setStartHeaderBackgroundColor(int color) {
     tlStartHeader.setBackgroundColor(color);
   }
 
