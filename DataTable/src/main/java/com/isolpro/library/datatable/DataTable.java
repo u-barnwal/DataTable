@@ -3,7 +3,6 @@ package com.isolpro.library.datatable;
 import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.HorizontalScrollView;
@@ -116,6 +115,8 @@ public class DataTable extends RelativeLayout {
       View cellBody = trBody.getChildAt(i);
       View cellRowHeader = trRowHeader.getChildAt(i);
 
+      if (cellBody == null || cellRowHeader == null) return;
+
       if (cellBody.getMeasuredWidth() > cellRowHeader.getMeasuredWidth())
         cellRowHeader.setMinimumWidth(cellBody.getMeasuredWidth());
       else
@@ -127,6 +128,8 @@ public class DataTable extends RelativeLayout {
     for (int i = 0; i < tlBody.getChildCount(); i++) {
       View columnBody = tlBody.getChildAt(i);
       View columnColumnHeader = tlColumnHeader.getChildAt(i);
+
+      if (columnBody == null || columnColumnHeader == null) return;
 
       if (columnBody.getMeasuredHeight() > columnColumnHeader.getMeasuredHeight())
         columnColumnHeader.setMinimumHeight(columnBody.getMeasuredHeight());
@@ -146,12 +149,14 @@ public class DataTable extends RelativeLayout {
   }
 
   private void populateTopHeader() {
+    int itemsCount = dataTableAdapter.getTopHeaderCount();
+
     if (tlRowHeader.getChildCount() == 0)
       tlRowHeader.addView(new TableRow(context));
 
     TableRow thTr = ((TableRow) tlRowHeader.getChildAt(0));
 
-    for (int i = 0; i < dataTableAdapter.getTopHeaderCount(); i++) {
+    for (int i = 0; i < itemsCount; i++) {
       if (thTr.getChildCount() > i) {
         TopHeaderTextView currentView = (TopHeaderTextView) thTr.getChildAt(i);
 
@@ -161,10 +166,12 @@ public class DataTable extends RelativeLayout {
         thTr.addView(dataTableAdapter.getTopHeaderView(i, null));
     }
 
-    // TODO: remove any extras view that may have been created
+    Utils.removeChildFromIndex(thTr, itemsCount);
   }
 
   private void populateStartHeader() {
+    int itemsCount = dataTableAdapter.getStartHeaderCount();
+
     for (int i = 0; i < dataTableAdapter.getStartHeaderCount(); i++) {
       if (tlColumnHeader.getChildCount() > i) {
         TableRow shTr = (TableRow) tlColumnHeader.getChildAt(i);
@@ -180,14 +187,14 @@ public class DataTable extends RelativeLayout {
         tlColumnHeader.addView(shTr);
       }
 
-      // TODO: remove any extras view that may have been created
+      Utils.removeChildFromIndex(tlColumnHeader, itemsCount);
     }
   }
 
   private void populateBody() {
-    for (int i = 0; i < dataTableAdapter.getBodyCount(); i++) {
-      Log.e("tlBody.getChildCount", tlBody.getChildCount() + " " + i);
+    int itemsCount = dataTableAdapter.getBodyCount();
 
+    for (int i = 0; i < itemsCount; i++) {
       if (tlBody.getChildCount() > i) {
         BodyTableRow currentView = (BodyTableRow) tlBody.getChildAt(i);
 
@@ -197,7 +204,7 @@ public class DataTable extends RelativeLayout {
         tlBody.addView(dataTableAdapter.getBodyView(i, null));
     }
 
-    // TODO: remove any extras view that may have been created
+    Utils.removeChildFromIndex(tlBody, itemsCount);
   }
 
   private void handleOnBodyRowClicked(View rowView) {
