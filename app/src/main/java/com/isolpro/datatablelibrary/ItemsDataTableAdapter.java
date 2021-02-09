@@ -15,7 +15,7 @@ import com.isolpro.library.datatable.TopHeaderTextView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemsDataTableAdapter extends DataTableAdapter<String> {
+public class ItemsDataTableAdapter extends DataTableAdapter<List<String>> {
 
   private final Context context;
 

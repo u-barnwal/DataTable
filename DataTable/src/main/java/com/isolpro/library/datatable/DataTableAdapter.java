@@ -33,7 +33,7 @@ public abstract class DataTableAdapter<BI> {
     return null;
   }
 
-  public List<BI> getBodyItem(int position) {
+  public BI getBodyItem(int position) {
     return null;
   }
 
