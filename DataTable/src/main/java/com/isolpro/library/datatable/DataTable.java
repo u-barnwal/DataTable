@@ -157,13 +157,16 @@ public class DataTable extends RelativeLayout {
     TableRow thTr = ((TableRow) tlTopHeader.getChildAt(0));
 
     for (int i = 0; i < itemsCount; i++) {
-      if (thTr.getChildCount() > i) {
-        TopHeaderTextView currentView = (TopHeaderTextView) thTr.getChildAt(i);
+      TopHeaderTextView currentView = thTr.getChildCount() > i ? (TopHeaderTextView) thTr.getChildAt(i) : null;
 
+      TopHeaderTextView topHeaderTextView = dataTableAdapter.getTopHeaderView(i, currentView);
+
+      if (currentView == null)
+        thTr.addView(topHeaderTextView);
+      else {
         thTr.removeViewAt(i);
-        thTr.addView(dataTableAdapter.getTopHeaderView(i, currentView), i);
-      } else
-        thTr.addView(dataTableAdapter.getTopHeaderView(i, null));
+        thTr.addView(topHeaderTextView, i);
+      }
     }
 
     Utils.removeChildFromIndex(thTr, itemsCount);
@@ -195,13 +198,17 @@ public class DataTable extends RelativeLayout {
     int itemsCount = dataTableAdapter.getBodyCount();
 
     for (int i = 0; i < itemsCount; i++) {
-      if (tlBody.getChildCount() > i) {
-        BodyTableRow currentView = (BodyTableRow) tlBody.getChildAt(i);
+      BodyTableRow currentView = tlBody.getChildCount() > i ? (BodyTableRow) tlBody.getChildAt(i) : null;
 
+      BodyTableRow row = dataTableAdapter.getBodyView(i, currentView);
+      row.setOnClickListener(this::handleOnBodyRowClicked);
+
+      if (currentView == null)
+        tlBody.addView(row);
+      else {
         tlBody.removeViewAt(i);
-        tlBody.addView(dataTableAdapter.getBodyView(i, currentView), i);
-      } else
-        tlBody.addView(dataTableAdapter.getBodyView(i, null));
+        tlBody.addView(row, i);
+      }
     }
 
     Utils.removeChildFromIndex(tlBody, itemsCount);

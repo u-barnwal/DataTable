@@ -38,9 +38,9 @@ public class MainActivity extends AppCompatActivity {
     List<String> topHeaderItems = new ArrayList<>();
     topHeaderItems.add("Names");
     topHeaderItems.add("Classes");
-//    topHeaderItems.add("Sections");
+    topHeaderItems.add("Sections");
     topHeaderItems.add("Rolls");
-//    topHeaderItems.add("Emails");
+    topHeaderItems.add("Emails");
     topHeaderItems.add("Mobiles");
     topHeaderItems.add("Websites");
     topHeaderItems.add("Subjects");
@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
 
     adapter.setBodyItems(bodyItems);
 
-    adapter.notifyDatasetChanged();
+//    adapter.notifyDatasetChanged();
   }
 
 }
